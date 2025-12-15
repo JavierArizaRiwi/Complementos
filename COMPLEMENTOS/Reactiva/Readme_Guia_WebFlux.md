@@ -1,5 +1,5 @@
 
-# 📘 Guía Completa: Programación Reactiva con Spring WebFlux (Explicada para Juniors)
+# 📘 Guía Completa: Programación Reactiva con Spring WebFlux
 
 Esta guía te ayudará a entender **qué es la programación reactiva**, **por qué es importante hoy en día**, y **cómo se usa con Spring WebFlux** para construir APIs modernas, rápidas y escalables.
 
