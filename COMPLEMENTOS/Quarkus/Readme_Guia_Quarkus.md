@@ -1,4 +1,3 @@
-
 # Guía Completa y Paso a Paso: CRUD en Quarkus  
 **Incluye comandos, estructura, menús del IDE, y explicación detallada para tus coders**
 
@@ -44,6 +43,26 @@ Cada módulo (REST, Hibernate, Kafka, JWT, etc.) está optimizado por una extens
 ---
 
 # 2. Crear Proyecto Quarkus desde Cero
+
+## Opción 1: Usar Quarkus Code Generator
+
+Quarkus ofrece una herramienta en línea llamada **Quarkus Code Generator**, que funciona de manera similar a Spring Initializr. Sigue estos pasos:
+
+1. Abre tu navegador y ve a [https://code.quarkus.io/](https://code.quarkus.io/).
+2. Llena los campos requeridos:
+   - **Group:** com.riwi.example
+   - **Artifact:** quarkus-crud-usuarios
+   - **Build Tool:** Maven o Gradle (elige el que prefieras).
+   - **Extensions:** Selecciona las extensiones necesarias, como:
+     - RESTEasy Reactive Jackson
+     - Hibernate ORM con Panache
+     - JDBC Driver para PostgreSQL
+     - SmallRye OpenAPI
+3. Haz clic en **Generate your application**.
+4. Descarga el archivo ZIP generado y descomprímelo en tu máquina.
+5. Abre el proyecto en tu IDE favorito (por ejemplo, IntelliJ IDEA o VS Code).
+
+## Opción 2: Usar el Comando Maven
 
 En la terminal:
 
@@ -426,4 +445,4 @@ Este README está listo para usar en proyectos, talleres y clases.
 
 ---
 
-Fin de la guía 
+Fin de la guía
