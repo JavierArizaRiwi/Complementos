@@ -39,53 +39,100 @@ Reglas del negocio:
 
 ### 2. BDD — Describir el Comportamiento
 
-El Desarrollo Dirigido por el Comportamiento (BDD) utiliza historias en lenguaje natural para describir qué debe pasar.
+El Desarrollo Dirigido por el Comportamiento (BDD) utiliza historias en lenguaje natural para describir qué debe pasar. Estas historias suelen escribirse en un formato estándar llamado **Gherkin**, que permite estructurar los escenarios de manera clara y comprensible para todos los involucrados.
 
-#### Escenario 1: Pagar Correctamente
-- Dado que existe una orden con total $100.
-- Y la orden está pendiente.
-- Cuando el cliente paga la orden.
-- Entonces la orden queda pagada.
+#### ¿Qué es Gherkin?
+Gherkin es un lenguaje diseñado para describir el comportamiento esperado de un sistema utilizando una sintaxis sencilla y estructurada. Cada escenario se compone de:
 
-Este escenario es entendible para:
+- **Feature (Funcionalidad):** Describe el objetivo general.
+- **Scenario (Escenario):** Define un caso específico.
+- **Given (Dado):** El contexto inicial.
+- **When (Cuando):** La acción que se realiza.
+- **Then (Entonces):** El resultado esperado.
+
+#### Ejemplo de Escenarios en Gherkin
+
+**Feature:** Pagar una orden
+
+**Scenario 1: Pagar Correctamente**
+```
+Given una orden con total $100
+And la orden está pendiente
+When el cliente paga la orden
+Then la orden queda pagada
+```
+
+**Scenario 2: Pagar Dos Veces**
+```
+Given una orden pagada
+When intento pagarla de nuevo
+Then veo un error "orden ya pagada"
+```
+
+**Scenario 3: Total Inválido**
+```
+Given una orden con total $0
+When intento pagarla
+Then veo un error "total inválido"
+```
+
+Este formato es entendible para:
 - Negocio
 - QA
 - Desarrolladores
-
-#### Escenario 2: Pagar Dos Veces
-- Dado que existe una orden pagada.
-- Cuando intento pagarla de nuevo.
-- Entonces veo un error "orden ya pagada".
-
-#### Escenario 3: Total Inválido
-- Dado que una orden tiene total $0.
-- Cuando intento pagarla.
-- Entonces veo un error "total inválido".
-
-Esto define qué debe pasar, no cómo.
 
 ---
 
 ### 3. TDD — Construir las Reglas (Tests)
 
-El Desarrollo Dirigido por Pruebas (TDD) se enfoca en escribir pruebas antes de implementar las reglas.
+El Desarrollo Dirigido por Pruebas (TDD) se enfoca en escribir pruebas antes de implementar las reglas. Este enfoque sigue un ciclo iterativo conocido como **Red-Green-Refactor**:
 
-#### Test 1: No Pagar Dos Veces
-- Dado una orden pagada.
-- Cuando `pay()`.
-- Entonces lanza error.
+1. **Red (Falla):** Escribir una prueba que falle porque la funcionalidad aún no existe.
+2. **Green (Funciona):** Implementar el código mínimo necesario para que la prueba pase.
+3. **Refactor (Refactorizar):** Mejorar el diseño del código manteniendo las pruebas en verde.
 
-Falla → No existe.
-Hago lo mínimo.
-Limpio.
+#### Ejemplo del Ciclo TDD
 
-#### Test 2: Cambiar Estado al Pagar
-- Cuando `order.pay()`.
-- Entonces `order.status == PAID`.
+**Test 1: No Pagar Dos Veces**
+- **Dado** una orden pagada.
+- **Cuando** `pay()`.
+- **Entonces** lanza error.
 
-#### Test 3: Total Válido
-- Cuando `order.total > 0`.
-- Entonces pasa la validación.
+1. **Red:** Escribir el test:
+```java
+@Test
+void noDebePermitirPagarDosVeces() {
+    Order order = new Order(100);
+    order.pay();
+
+    assertThrows(IllegalStateException.class, () -> order.pay());
+}
+```
+Este test fallará porque aún no hemos implementado la lógica para evitar pagos duplicados.
+
+2. **Green:** Implementar el código mínimo:
+```java
+public void pay() {
+    if (this.status == OrderStatus.PAID) {
+        throw new IllegalStateException("La orden ya está pagada");
+    }
+    this.status = OrderStatus.PAID;
+}
+```
+Ahora el test pasa.
+
+3. **Refactor:** Mejorar el diseño del código:
+- Revisar nombres de métodos, eliminar duplicación, etc.
+
+#### Otros Tests
+
+**Test 2: Cambiar Estado al Pagar**
+- **Cuando** `order.pay()`.
+- **Entonces** `order.status == PAID`.
+
+**Test 3: Total Válido**
+- **Cuando** `order.total > 0`.
+- **Entonces** pasa la validación.
 
 Cada test impulsa el diseño. No escribes reglas “porque sí”.
 
